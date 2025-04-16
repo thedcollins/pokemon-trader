@@ -1,0 +1,23 @@
+{
+    "verbose": true,
+    "watch": [
+      "server.js",
+      "routes/",
+      "controllers/",
+      "views/",
+      "config/",
+      "middleware/",
+      "models/"
+    ],
+    "ext": "js, ejs, json",
+    "ignore": [
+      "node_modules/",
+      ".git/",
+      "public/",
+      "*.test.js",
+      "*.log",
+      ".env"
+    ],
+    "delay": "1000"
+  }
+  

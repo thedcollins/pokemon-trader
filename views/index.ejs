@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title><%= typeof title !== 'undefined' ? title : 'Welcome' %></title>
+    <style>
+        body { padding: 20px; font-family: sans-serif; }
+    </style>
+</head>
+<body>
+    <h1><%= typeof title !== 'undefined' ? title : 'Welcome!' %></h1>
+
+    <p>Welcome to the Pokémon TCG Pocket Trader application!</p>
+
+    <p>
+        <a href="/auth/register">Register</a> | 
+        <a href="/auth/login">Login</a>
+        </p>
+
+    </body>
+</html>
