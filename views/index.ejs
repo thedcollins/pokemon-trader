@@ -7,17 +7,28 @@
     <title><%= typeof title !== 'undefined' ? title : 'Welcome' %></title>
     <style>
         body { padding: 20px; font-family: sans-serif; }
+        nav a { margin: 0 10px; }
+        nav span { margin-right: 10px; }
     </style>
 </head>
 <body>
+    <nav>
+        <%# Check if the user object exists (meaning they are logged in) %>
+        <% if (typeof user !== 'undefined' && user) { %>
+            <span>Welcome, <%= user.username %>!</span>
+            <a href="/auth/logout">Logout</a>
+            <% } else { %>
+            <%# Show login/register links if user is not logged in %>
+            <a href="/auth/login">Login</a>
+            <a href="/auth/register">Register</a>
+        <% } %>
+        </nav>
+
+    <hr>
+
     <h1><%= typeof title !== 'undefined' ? title : 'Welcome!' %></h1>
 
     <p>Welcome to the Pokémon TCG Pocket Trader application!</p>
-
-    <p>
-        <a href="/auth/register">Register</a> | 
-        <a href="/auth/login">Login</a>
-        </p>
 
     </body>
 </html>

@@ -24,25 +24,13 @@ exports.registerUser = async (req, res) => {
 
   // Input Validation
   if (!username || !email || !password || !passwordConfirm) {
-    return res.status(400).render('register', {
-      title: 'Register',
-      error: 'Please fill in all fields.',
-      formData: formData
-    });
+    return res.status(400).render('register', { title: 'Register', error: 'Please fill in all fields.', formData: formData });
   }
   if (password !== passwordConfirm) {
-    return res.status(400).render('register', {
-      title: 'Register',
-      error: 'Passwords do not match.',
-      formData: formData
-    });
+    return res.status(400).render('register', { title: 'Register', error: 'Passwords do not match.', formData: formData });
   }
   if (!email.includes('@')) {
-      return res.status(400).render('register', {
-          title: 'Register',
-          error: 'Please enter a valid email address.',
-          formData: formData
-      });
+      return res.status(400).render('register', { title: 'Register', error: 'Please enter a valid email address.', formData: formData });
   }
   // Add more validation if needed
 
@@ -54,11 +42,7 @@ exports.registerUser = async (req, res) => {
     );
 
     if (existingUserCheck.rows.length > 0) {
-      return res.status(400).render('register', {
-        title: 'Register',
-        error: 'Username or email already in use.',
-        formData: formData
-      });
+      return res.status(400).render('register', { title: 'Register', error: 'Username or email already in use.', formData: formData });
     }
 
     // Hash the password
@@ -73,16 +57,11 @@ exports.registerUser = async (req, res) => {
     console.log('User registered successfully:', newUser.rows[0]);
 
     // Redirect to login page after successful registration
-    // TODO: Implement flash messages for a better success indication
-    res.redirect('/auth/login'); // Redirect to the login page
+    res.redirect('/auth/login');
 
   } catch (error) {
     console.error('Error during registration:', error);
-    res.status(500).render('register', {
-        title: 'Register',
-        error: 'An error occurred during registration. Please try again.',
-        formData: formData
-    });
+    res.status(500).render('register', { title: 'Register', error: 'An error occurred during registration. Please try again.', formData: formData });
   }
 };
 
@@ -90,33 +69,25 @@ exports.registerUser = async (req, res) => {
 
 // Function to render the login page (GET /auth/login)
 exports.renderLoginPage = (req, res) => {
-  // Render the login.ejs view
   res.render('login', {
     title: 'Login',
-    error: null, // No error initially
-    formData: {} // No form data initially
+    error: null,
+    formData: {}
   });
 };
 
 // Function to handle user login form submission (POST /auth/login)
 exports.loginUser = async (req, res) => {
-  // 1. Get email/username and password from request body
-  // Allow login with either email or username (adjust query accordingly)
-  const { identifier, password } = req.body; // Using 'identifier' for email/username field name
-  const formData = { identifier }; // Store identifier to refill form on error
+  const { identifier, password } = req.body;
+  const formData = { identifier };
 
-  // 2. Basic Validation
+  // Basic Validation
   if (!identifier || !password) {
-    return res.status(400).render('login', {
-      title: 'Login',
-      error: 'Please provide both identifier (email/username) and password.',
-      formData: formData
-    });
+    return res.status(400).render('login', { title: 'Login', error: 'Please provide both identifier (email/username) and password.', formData: formData });
   }
 
   try {
-    // 3. Find user by email or username
-    // Query users table for matching email (case-insensitive) or username
+    // Find user by email or username
     const userResult = await db.query(
       'SELECT id, username, email, password_hash FROM users WHERE lower(email) = lower($1) OR username = $1',
       [identifier]
@@ -124,67 +95,54 @@ exports.loginUser = async (req, res) => {
 
     // Check if user exists
     if (userResult.rows.length === 0) {
-      // User not found
-      return res.status(401).render('login', { // 401 Unauthorized
-        title: 'Login',
-        error: 'Invalid credentials.', // Generic error for security
-        formData: formData
-      });
+      return res.status(401).render('login', { title: 'Login', error: 'Invalid credentials.', formData: formData });
     }
 
     const user = userResult.rows[0];
 
-    // 4. Compare submitted password with stored hash
+    // Compare submitted password with stored hash
     const isMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!isMatch) {
-      // Passwords don't match
-      return res.status(401).render('login', { // 401 Unauthorized
-        title: 'Login',
-        error: 'Invalid credentials.', // Generic error for security
-        formData: formData
-      });
+      return res.status(401).render('login', { title: 'Login', error: 'Invalid credentials.', formData: formData });
     }
 
-    // 5. Password matches - Generate JWT
-    const payload = {
-      userId: user.id,
-      username: user.username
-      // Add other non-sensitive info if needed (e.g., roles)
-    };
+    // Password matches - Generate JWT
+    const payload = { userId: user.id, username: user.username };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: JWT_EXPIRY });
 
-    // Sign the token using the secret from .env and set expiration
-    const token = jwt.sign(
-        payload,
-        process.env.JWT_SECRET,
-        { expiresIn: JWT_EXPIRY }
-    );
-
-    // 6. Set JWT in an HTTP-Only cookie
+    // Set JWT in an HTTP-Only cookie
     res.cookie('token', token, {
-      httpOnly: true, // Crucial: Prevents client-side JS access
+      httpOnly: true, // Prevents client-side JS access
       secure: process.env.NODE_ENV === 'production', // Send only over HTTPS in production
-      maxAge: 3600000, // Cookie expiry in milliseconds (e.g., 1 hour to match JWT)
-      // sameSite: 'strict' // Consider adding SameSite attribute for CSRF protection
+      maxAge: 3600000, // Cookie expiry in ms (1 hour)
+      path: '/' // Ensure cookie path is root
+      // sameSite: 'strict' // Consider adding SameSite attribute
     });
 
-    // 7. Redirect to a dashboard or home page after successful login
-    // TODO: Create a dashboard page to redirect to
-    res.redirect('/'); // Redirect to home page for now
+    // Redirect to home page after successful login
+    res.redirect('/');
 
   } catch (error) {
     console.error('Error during login:', error);
-    res.status(500).render('login', {
-      title: 'Login',
-      error: 'An error occurred during login. Please try again.',
-      formData: formData
-    });
+    res.status(500).render('login', { title: 'Login', error: 'An error occurred during login. Please try again.', formData: formData });
   }
 };
 
+// --- Logout Function --- << NEW
 
-// --- TODO: Add Logout Function Later ---
-// exports.logoutUser = (req, res) => {
-//   res.clearCookie('token'); // Clear the token cookie
-//   res.redirect('/auth/login'); // Redirect to login page
-// };
+// Function to handle user logout (GET /auth/logout)
+exports.logoutUser = (req, res) => {
+  // Clear the 'token' cookie.
+  // It's good practice to pass the same options used when setting the cookie
+  // to ensure it's properly cleared, especially 'path'.
+  res.clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      path: '/'
+      // sameSite: 'strict' // Match if you used it when setting
+  });
+
+  // Redirect the user to the login page (or home page)
+  res.redirect('/auth/login');
+};

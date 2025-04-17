@@ -13,15 +13,14 @@ router.get('/register', authController.renderRegisterPage);
 // POST /auth/register - Handle the registration form submission
 router.post('/register', authController.registerUser);
 
-// GET /auth/login - Display the login page << NEW
+// GET /auth/login - Display the login page
 router.get('/login', authController.renderLoginPage);
 
-// POST /auth/login - Handle the login form submission << NEW
+// POST /auth/login - Handle the login form submission
 router.post('/login', authController.loginUser);
 
-// --- TODO: Add Logout Route Later ---
-// GET /auth/logout - Handle user logout
-// router.get('/logout', authController.logoutUser);
+// GET /auth/logout - Handle user logout << NEW
+router.get('/logout', authController.logoutUser);
 
 
 // Export the router so it can be used in server.js
