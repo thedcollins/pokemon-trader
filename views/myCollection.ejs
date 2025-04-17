@@ -1,95 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title><%= typeof title !== 'undefined' ? title : 'My Collection' %></title>
-    <style>
-        /* Basic styling - can reuse or adapt from browse.ejs */
-        body { padding: 20px; font-family: sans-serif; }
-        nav a { margin: 0 10px; }
-        nav span { margin-right: 10px; }
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Responsive grid */
-            gap: 15px; /* Space between cards */
-            margin-top: 20px;
-        }
-        .card-item {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .card-item img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .card-item p {
-            margin: 5px 0 0;
-            font-size: 0.9em;
-        }
-         .card-item .quantity {
-            font-weight: bold;
-            color: blue;
-            margin-top: 10px;
-         }
-    </style>
-</head>
-<body>
-    <nav>
-        <a href="/">Home</a> |
-        <a href="/cards/browse">Browse Cards</a>
-        
-         <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
-             | <a href="/collection">My Collection</a> 
-             | <span>Welcome, <%= user.username %>!</span>
-             <a href="/auth/logout">Logout</a>
-        <% } else { %>
-            | <a href="/auth/login">Login</a>
-            <a href="/auth/register">Register</a>
-        <% } %>
-    </nav>
-    <hr>
+<%- include('partials/header'); %> <%# Include the header partial %>
 
-    <h1><%= typeof title !== 'undefined' ? title : 'My Collection' %></h1>
+<%# --- Page Specific Content Starts Here --- %>
 
-    
-    <% if (typeof collection !== 'undefined' && collection.length > 0) { %>
-        <p>You have <%= collection.length %> unique card(s) in your collection.</p>
-        <div class="card-grid">
-            
-            <% collection.forEach(item => { %>
-                <div class="card-item">
-                    <div> 
-                        <% if (item.image_url) { %>
-                            <img src="<%= item.image_url %>" alt="<%= item.card_name %>">
-                        <% } else { %>
-                            <p>(No Image)</p>
-                        <% } %>
-                        <p><strong><%= item.card_name %></strong></p>
-                        <p><%= item.set_name %> - <%= item.card_number %></p>
-                        <p>Rarity: <%= item.rarity %></p>
-                        <p class="quantity">Quantity: <%= item.quantity %></p> 
-                    </div>
-                    <div> 
-                        
-                    </div>
+<h1><%= typeof title !== 'undefined' ? title : 'My Collection' %></h1>
+
+<% if (typeof collection !== 'undefined' && collection.length > 0) { %>
+    <p>You have <%= collection.length %> unique card(s) in your collection.</p>
+    <div class="card-grid">
+        <% collection.forEach(item => { %>
+            <div class="card-item">
+                <div> <% if (item.image_url) { %>
+                        <img src="<%= item.image_url %>" alt="<%= item.card_name %>">
+                    <% } else { %>
+                        <p>(No Image)</p>
+                    <% } %>
+                    <p><strong><%= item.card_name %></strong></p>
+                    <p><%= item.set_name %> - <%= item.card_number %></p>
+                    <p>Rarity: <%= item.rarity %></p>
+                    <p class="quantity">Quantity: <%= item.quantity %></p>
                 </div>
-            <% }); %> 
-        </div> 
-    <% } else { %>
-        
-        <p>Your collection is empty. Go <a href="/cards/browse">browse cards</a> to add some!</p>
-    <% } %> 
-    
+                <div> <%# --- ADD TO TRADE LIST BUTTON --- %>
+                    <form action="/tradelist/add/<%= item.user_collection_id %>" method="POST" style="display: inline;">
+                        <button type="submit" class="trade-button">Add to Trade List</button>
+                    </form>
+                    <%# --- END ADD TO TRADE LIST BUTTON --- %>
 
-    </body>
-</html>
+                    <%# --- REMOVE FROM COLLECTION BUTTON --- %>
+                    <form action="/collection/remove/<%= item.user_collection_id %>" method="POST" style="display: inline;">
+                        <button type="submit" class="remove-button">Remove</button>
+                    </form>
+                    <%# --- END REMOVE FROM COLLECTION BUTTON --- %>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+<% } else { %>
+    <p>Your collection is empty. Go <a href="/cards/browse">browse cards</a> to add some!</p>
+<% } %>
+
+<%# --- Page Specific Content Ends Here --- %>
+
+<%- include('partials/footer'); %> <%# Include the footer partial %>

@@ -1,30 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title><%= typeof title !== 'undefined' ? title : 'Error' %></title>
-    <style>
-      .error-container { padding: 20px; }
-      pre { background-color: #f4f4f4; padding: 10px; border: 1px solid #ddd; overflow-x: auto; }
-    </style>
-</head>
-<body>
-    <div class="error-container">
-        <h1><%= typeof title !== 'undefined' ? title : 'Something went wrong' %></h1>
-        
-        <%# Display the main error message %>
-        <p><%= typeof message !== 'undefined' ? message : 'An unexpected error occurred.' %></p>
+<%- include('partials/header'); %> <%# Include the header partial %>
 
-        <%# Display stack trace ONLY in development mode for debugging %>
-        <% if (process.env.NODE_ENV === 'development' && typeof error !== 'undefined' && error.stack) { %>
-            <h2>Stack Trace (Development Mode Only)</h2>
-            <pre><code><%= error.stack %></code></pre>
-        <% } %>
+<%# --- Page Specific Content Starts Here --- %>
 
-        <p><a href="/">Go back to Home</a></p> 
-        <%# Assumes you have a home route at '/' %>
-    </div>
-</body>
-</html>
+<div class="error-container"> <%# Re-added container div for context %>
+    <h1><%= typeof title !== 'undefined' ? title : 'Something went wrong' %></h1>
+
+    <%# Display the main error message %>
+    <p><%= typeof message !== 'undefined' ? message : 'An unexpected error occurred.' %></p>
+
+    <%# Display stack trace ONLY in development mode for debugging %>
+    <% if (process.env.NODE_ENV === 'development' && typeof error !== 'undefined' && error.stack) { %>
+        <h2>Stack Trace (Development Mode Only)</h2>
+        <pre><code><%= error.stack %></code></pre>
+    <% } %>
+
+    <p><a href="/">Go back to Home</a></p>
+</div>
+
+<%# --- Page Specific Content Ends Here --- %>
+
+<%- include('partials/footer'); %> <%# Include the footer partial %>

@@ -1,34 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title><%= typeof title !== 'undefined' ? title : 'Welcome' %></title>
-    <style>
-        body { padding: 20px; font-family: sans-serif; }
-        nav a { margin: 0 10px; }
-        nav span { margin-right: 10px; }
-    </style>
-</head>
-<body>
-    <nav>
-        <%# Check if the user object exists (meaning they are logged in) %>
-        <% if (typeof user !== 'undefined' && user) { %>
-            <span>Welcome, <%= user.username %>!</span>
-            <a href="/auth/logout">Logout</a>
-            <% } else { %>
-            <%# Show login/register links if user is not logged in %>
-            <a href="/auth/login">Login</a>
-            <a href="/auth/register">Register</a>
-        <% } %>
-        </nav>
+<%- include('partials/header'); %> <%# Corrected Path: Removed ../ %>
 
-    <hr>
+<%# --- Page Specific Content Starts Here --- %>
 
-    <h1><%= typeof title !== 'undefined' ? title : 'Welcome!' %></h1>
+<h1><%= typeof title !== 'undefined' ? title : 'Welcome!' %></h1>
 
-    <p>Welcome to the Pokémon TCG Pocket Trader application!</p>
+<p>Welcome to the Pokémon TCG Pocket Trader application!</p>
 
-    </body>
-</html>
+<p>Use the navigation above to browse cards or manage your collection, trade list, and want list (if logged in).</p>
+
+<%# --- Page Specific Content Ends Here --- %>
+
+<%- include('partials/footer'); %> <%# Corrected Path: Removed ../ %>

@@ -1,0 +1,39 @@
+<%- include('partials/header'); %> <%# Include the header partial %>
+
+<%# --- Page Specific Content Starts Here --- %>
+
+<h1><%= typeof title !== 'undefined' ? title : 'My Trade List' %></h1>
+
+<% if (typeof tradeList !== 'undefined' && tradeList.length > 0) { %>
+    <p>You have <%= tradeList.length %> item(s) listed for trade.</p>
+    <div class="card-grid">
+        <% tradeList.forEach(item => { %>
+            <div class="card-item">
+                <div> <% if (item.image_url) { %>
+                        <img src="<%= item.image_url %>" alt="<%= item.card_name %>">
+                    <% } else { %>
+                        <p>(No Image)</p>
+                    <% } %>
+                    <p><strong><%= item.card_name %></strong></p>
+                    <p><%= item.set_name %> - <%= item.card_number %></p>
+                    <p>Rarity: <%= item.rarity %></p>
+                    <p class="quantity">Qty for Trade: <%= item.quantity_for_trade %></p>
+                    <p style="font-size: 0.8em;">(Total Owned: <%= item.total_quantity %>)</p>
+                </div>
+                <div> <%# --- REMOVE FROM TRADE LIST BUTTON --- %>
+                    <form action="/tradelist/remove/<%= item.trade_list_item_id %>" method="POST" style="display: inline;">
+                        <button type="submit" class="remove-button">Remove from Trade List</button>
+                    </form>
+                    <%# --- END REMOVE FROM TRADE LIST BUTTON --- %>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+<% } else { %>
+    <p>Your trade list is empty. You can add items from your collection.</p>
+     <p><a href="/collection">View My Collection</a></p>
+<% } %>
+
+<%# --- Page Specific Content Ends Here --- %>
+
+<%- include('partials/footer'); %> <%# Include the footer partial %>

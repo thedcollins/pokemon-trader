@@ -1,0 +1,36 @@
+<%- include('partials/header'); %> <%# Include the header partial %>
+
+<%# --- Page Specific Content Starts Here --- %>
+
+<h1><%= typeof title !== 'undefined' ? title : 'My Want List' %></h1>
+
+<% if (typeof wantList !== 'undefined' && wantList.length > 0) { %>
+    <p>You have <%= wantList.length %> card(s) on your want list.</p>
+    <div class="card-grid">
+        <% wantList.forEach(item => { %>
+            <div class="card-item">
+                <div> <% if (item.image_url) { %>
+                        <img src="<%= item.image_url %>" alt="<%= item.card_name %>">
+                    <% } else { %>
+                        <p>(No Image)</p>
+                    <% } %>
+                    <p><strong><%= item.card_name %></strong></p>
+                    <p><%= item.set_name %> - <%= item.card_number %></p>
+                    <p>Rarity: <%= item.rarity %></p>
+                </div>
+                <div> <%# --- REMOVE FROM WANT LIST BUTTON --- %>
+                    <form action="/wantlist/remove/<%= item.want_list_item_id %>" method="POST" style="display: inline;">
+                        <button type="submit" class="remove-button">Remove from Want List</button>
+                    </form>
+                    <%# --- END REMOVE FROM WANT LIST BUTTON --- %>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+<% } else { %>
+    <p>Your want list is empty. Go <a href="/cards/browse">browse cards</a> to add some!</p>
+<% } %>
+
+<%# --- Page Specific Content Ends Here --- %>
+
+<%- include('partials/footer'); %> <%# Include the footer partial %>

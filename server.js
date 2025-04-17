@@ -15,7 +15,9 @@ const { checkAuthStatus } = require('./middleware/authMiddleware');
 const authRoutes = require('./routes/authRoutes');
 const cardApiRoutes = require('./routes/cardApiRoutes');
 const cardPageRoutes = require('./routes/cardPageRoutes');
-const collectionRoutes = require('./routes/collectionRoutes'); // << ADDED: Require Collection routes
+const collectionRoutes = require('./routes/collectionRoutes');
+const tradeListRoutes = require('./routes/tradeListRoutes');
+const wantListRoutes = require('./routes/wantListRoutes'); // << ADDED: Require Want List routes
 
 // --- Create Express App ---
 const app = express();
@@ -49,7 +51,13 @@ app.use('/api', cardApiRoutes);
 app.use('/cards', cardPageRoutes);
 
 // Mount Collection Routes
-app.use('/collection', collectionRoutes); // << ADDED: Mount Collection routes under /collection
+app.use('/collection', collectionRoutes);
+
+// Mount Trade List Routes
+app.use('/tradelist', tradeListRoutes);
+
+// Mount Want List Routes
+app.use('/wantlist', wantListRoutes); // << ADDED: Mount Want List routes under /wantlist
 
 // --- Error Handling ---
 
@@ -79,3 +87,4 @@ app.listen(PORT, () => {
         console.error("Error loading database config:", err.message);
     }
 });
+

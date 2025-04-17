@@ -1,101 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title><%= typeof title !== 'undefined' ? title : 'Browse Cards' %></title>
-    <style>
-        /* Basic styling for card display */
-        body { padding: 20px; font-family: sans-serif; }
-        nav a { margin: 0 10px; }
-        nav span { margin-right: 10px; }
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Responsive grid */
-            gap: 15px; /* Space between cards */
-            margin-top: 20px;
-        }
-        .card-item {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            display: flex; /* Use flexbox for layout */
-            flex-direction: column; /* Stack items vertically */
-            justify-content: space-between; /* Push button to bottom */
-        }
-        .card-item img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .card-item p {
-            margin: 5px 0 0;
-            font-size: 0.9em;
-        }
-        .card-item form {
-             margin-top: 10px; /* Add space above the button */
-        }
-        button { padding: 5px 10px; cursor: pointer; font-size: 0.8em; }
-    </style>
-</head>
-<body>
-    <nav>
-        <a href="/">Home</a> |
-        <a href="/cards/browse">Browse Cards</a>
-        <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
-            | <span>Welcome, <%= user.username %>!</span>
-            <a href="/auth/logout">Logout</a>
-            <% } else { %>
-            | <a href="/auth/login">Login</a>
-            <a href="/auth/register">Register</a>
-        <% } %>
-    </nav>
-    <hr>
+<%- include('partials/header'); %> <%# Include the header partial %>
 
-    <h1><%= typeof title !== 'undefined' ? title : 'Browse Cards' %></h1>
+<%# --- Page Specific Content Starts Here --- %>
 
-    <%# Check if the cards array exists and has items %>
-    <% if (typeof cards !== 'undefined' && cards.length > 0) { %>
-        <div class="card-grid">
-            <%# Loop through each card object in the cards array %>
-            <% cards.forEach(card => { %>
-                <div class="card-item">
-                    <div> <%# Div to group card info %>
-                        <%# Display the card image using the image_url %>
-                        <% if (card.image_url) { %>
-                            <img src="<%= card.image_url %>" alt="<%= card.card_name %>">
-                        <% } else { %>
-                            <p>(No Image)</p>
-                        <% } %>
-                        <%# Display the card name %>
-                        <p><strong><%= card.card_name %></strong></p>
-                        <%# Display set and number %>
-                        <p><%= card.set_name %> - <%= card.card_number %></p>
-                        <%# Display rarity %>
-                        <p>Rarity: <%= card.rarity %></p>
-                    </div>
+<h1><%= typeof title !== 'undefined' ? title : 'Browse Cards' %></h1>
 
-                    <div> <%# Div to group button %>
-                        <%# --- ADD TO COLLECTION BUTTON --- %>
-                        <%# Only show button if user is logged in %>
-                        <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
-                            <form action="/collection/add/<%= card.id %>" method="POST">
-                                <button type="submit">Add to Collection</button>
-                            </form>
-                        <% } %>
-                        <%# --- END ADD TO COLLECTION BUTTON --- %>
-                    </div>
+<% if (typeof cards !== 'undefined' && cards.length > 0) { %>
+    <div class="card-grid">
+        <% cards.forEach(card => { %>
+            <div class="card-item">
+                <div> <% if (card.image_url) { %>
+                        <img src="<%= card.image_url %>" alt="<%= card.card_name %>">
+                    <% } else { %>
+                        <p>(No Image)</p>
+                    <% } %>
+                    <p><strong><%= card.card_name %></strong></p>
+                    <p><%= card.set_name %> - <%= card.card_number %></p>
+                    <p>Rarity: <%= card.rarity %></p>
                 </div>
-            <% }); %>
-        </div>
-    <% } else { %>
-        <%# Display a message if no cards were found %>
-        <p>No cards found in the database.</p>
-    <% } %>
 
-    </body>
-</html>
+                <div> <%# --- ADD/WANT BUTTONS (Only show if logged in) --- %>
+                    <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
+                        <%# Add to Collection Button %>
+                        <form action="/collection/add/<%= card.id %>" method="POST" style="display: inline;">
+                            <button type="submit" class="collection-button">Add to Collection</button>
+                        </form>
+
+                        <%# Add to Want List Button %>
+                        <form action="/wantlist/add/<%= card.id %>" method="POST" style="display: inline;">
+                            <button type="submit" class="want-button">Add to Want List</button>
+                        </form>
+                    <% } %>
+                    <%# --- END ADD/WANT BUTTONS --- %>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+<% } else { %>
+    <p>No cards found in the database.</p>
+<% } %>
+
+<%# --- Page Specific Content Ends Here --- %>
+
+<%- include('partials/footer'); %> <%# Include the footer partial %>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title><%= typeof title !== 'undefined' ? title : 'Pocket Trader' %></title>
+    <style>
+        /* Common styles moved here */
+        body { padding: 20px; font-family: sans-serif; margin: 0; }
+        nav { background-color: #eee; padding: 10px 20px; margin-bottom: 20px; border-bottom: 1px solid #ccc;}
+        nav a { margin: 0 10px; text-decoration: none; color: #333; }
+        nav a:hover { text-decoration: underline; }
+        nav span { margin-right: 10px; color: #555; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
+        /* Keep card-specific styles in relevant views or main CSS */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .card-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card-item img { max-width: 100%; height: auto; display: block; margin-bottom: 5px; }
+        .card-item p { margin: 5px 0 0; font-size: 0.9em; }
+        .card-item .quantity { font-weight: bold; margin-top: 5px; }
+        .card-item form { margin-top: 5px; display: inline-block; margin-right: 3px; margin-left: 3px; }
+        .card-item button { padding: 3px 8px; cursor: pointer; font-size: 0.75em; border-radius: 3px; border: 1px solid #ccc; }
+        .card-item button.remove-button { background-color: #ffdddd; border-color: #fcc; color: #900; }
+        .card-item button.remove-button:hover { background-color: #ffcccc; }
+        .card-item button.trade-button { background-color: #ddffdd; border-color: #cfc; color: #070; }
+        .card-item button.trade-button:hover { background-color: #ccffcc; }
+         .card-item button.collection-button { background-color: #ddeeff; border-color: #cce; color: #007; }
+         .card-item button.collection-button:hover { background-color: #cceeff; }
+         .card-item button.want-button { background-color: #eeffee; border-color: #cec; color: #070; }
+          .card-item button.want-button:hover { background-color: #ccffcc; }
+        .error-message { color: red; margin-bottom: 15px; font-weight: bold; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; }
+        .form-group input[type="text"], .form-group input[type="email"], .form-group input[type="password"] { width: 100%; padding: 8px; margin-bottom: 5px; box-sizing: border-box;}
+
+    </style>
+</head>
+<body> <%# Opening body tag is here %>
+
+    <nav>
+        <a href="/">Home</a> |
+        <a href="/cards/browse">Browse Cards</a>
+         <%# Check login status using variables from res.locals (set by middleware) %>
+         <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
+             | <a href="/collection">My Collection</a>
+             | <a href="/tradelist">My Trade List</a>
+             | <a href="/wantlist">My Want List</a>
+             | <span>Welcome, <%= user.username %>!</span>
+             <a href="/auth/logout">Logout</a>
+        <% } else { %>
+            | <a href="/auth/login">Login</a>
+            <a href="/auth/register">Register</a>
+        <% } %>
+    </nav>
+    <hr>
+
+    <%# Main page content will go after this in the main view file %>

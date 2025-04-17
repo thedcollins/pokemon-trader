@@ -1,57 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title><%= typeof title !== 'undefined' ? title : 'Register' %></title>
-    <style>
-        /* Basic form styling */
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; }
-        input[type="text"], input[type="email"], input[type="password"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 5px; /* Add some space below input */
-            box-sizing: border-box; /* Include padding in width */
-        }
-        .error-message { color: red; margin-bottom: 15px; font-weight: bold; }
-        button { padding: 10px 15px; cursor: pointer; }
-    </style>
-</head>
-<body>
-    <h1>Register New Account</h1>
+<%- include('partials/header'); %> <%# Include the header partial %>
 
-    <%# Check if an error message exists and display it %>
-    <% if (typeof error !== 'undefined' && error) { %>
-        <p class="error-message"><%= error %></p>
-    <% } %>
+<%# --- Page Specific Content Starts Here --- %>
 
-    <form action="/auth/register" method="POST">
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <%# Pre-fill username if formData exists (e.g., after validation error) %>
-            <input type="text" id="username" name="username" value="<%= typeof formData !== 'undefined' ? formData.username : '' %>" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <%# Pre-fill email if formData exists %>
-            <input type="email" id="email" name="email" value="<%= typeof formData !== 'undefined' ? formData.email : '' %>" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <%# Do NOT pre-fill password fields %>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <div class="form-group">
-            <label for="passwordConfirm">Confirm Password:</label>
-            <input type="password" id="passwordConfirm" name="passwordConfirm" required>
-        </div>
-        <button type="submit">Register</button>
-    </form>
+<h1><%= typeof title !== 'undefined' ? title : 'Register' %></h1>
 
-    <p>Already have an account? <a href="/auth/login">Login here</a></p>
-    <%# The login link won't work until the login route/view is created %>
+<%# Check if an error message exists and display it %>
+<% if (typeof error !== 'undefined' && error) { %>
+    <p class="error-message"><%= error %></p>
+<% } %>
 
-    </body>
-</html>
+<form action="/auth/register" method="POST">
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <%# Pre-fill username if formData exists (e.g., after validation error) %>
+        <input type="text" id="username" name="username" value="<%= typeof formData !== 'undefined' ? formData.username : '' %>" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <%# Pre-fill email if formData exists %>
+        <input type="email" id="email" name="email" value="<%= typeof formData !== 'undefined' ? formData.email : '' %>" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <%# Do NOT pre-fill password fields %>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <div class="form-group">
+        <label for="passwordConfirm">Confirm Password:</label>
+        <input type="password" id="passwordConfirm" name="passwordConfirm" required>
+    </div>
+    <button type="submit">Register</button>
+</form>
+
+<p>Already have an account? <a href="/auth/login">Login here</a></p>
+
+<%# --- Page Specific Content Ends Here --- %>
+
+<%- include('partials/footer'); %> <%# Include the footer partial %>

@@ -1,46 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title><%= typeof title !== 'undefined' ? title : 'Login' %></title>
-    <style>
-        /* Basic form styling - same as register */
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; }
-        input[type="text"], input[type="email"], input[type="password"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 5px;
-            box-sizing: border-box;
-        }
-        .error-message { color: red; margin-bottom: 15px; font-weight: bold; }
-        button { padding: 10px 15px; cursor: pointer; }
-    </style>
-</head>
-<body>
-    <h1>Login</h1>
+<%- include('partials/header'); %> <%# Include the header partial %>
 
-    <%# Check if an error message exists and display it %>
-    <% if (typeof error !== 'undefined' && error) { %>
-        <p class="error-message"><%= error %></p>
-    <% } %>
+<%# --- Page Specific Content Starts Here --- %>
 
-    <form action="/auth/login" method="POST">
-        <div class="form-group">
-            <label for="identifier">Username or Email:</label>
-            <%# Pre-fill identifier if formData exists (e.g., after validation error) %>
-            <input type="text" id="identifier" name="identifier" value="<%= typeof formData !== 'undefined' ? formData.identifier : '' %>" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">Login</button>
-    </form>
+<h1><%= typeof title !== 'undefined' ? title : 'Login' %></h1>
 
-    <p>Don't have an account? <a href="/auth/register">Register here</a></p>
+<%# Check if an error message exists and display it %>
+<% if (typeof error !== 'undefined' && error) { %>
+    <p class="error-message"><%= error %></p>
+<% } %>
 
-    </body>
-</html>
+<form action="/auth/login" method="POST">
+    <div class="form-group">
+        <label for="identifier">Username or Email:</label>
+        <%# Pre-fill identifier if formData exists (e.g., after validation error) %>
+        <input type="text" id="identifier" name="identifier" value="<%= typeof formData !== 'undefined' ? formData.identifier : '' %>" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <button type="submit">Login</button>
+</form>
+
+<p>Don't have an account? <a href="/auth/register">Register here</a></p>
+
+<%# --- Page Specific Content Ends Here --- %>
+
+<%- include('partials/footer'); %> <%# Include the footer partial %>
