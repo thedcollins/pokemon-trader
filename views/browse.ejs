@@ -20,13 +20,15 @@
 
                 <div> <%# --- ADD/WANT BUTTONS (Only show if logged in) --- %>
                     <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
-                        <%# Add to Collection Button %>
-                        <form action="/collection/add/<%= card.id %>" method="POST" style="display: inline;">
+                        <%# Add to Collection Button/Form %>
+                        <%# ADDED class="add-collection-form" %>
+                        <form class="add-collection-form" action="/collection/add/<%= card.id %>" method="POST" style="display: inline;">
                             <button type="submit" class="collection-button">Add to Collection</button>
                         </form>
 
-                        <%# Add to Want List Button %>
-                        <form action="/wantlist/add/<%= card.id %>" method="POST" style="display: inline;">
+                        <%# Add to Want List Button/Form %>
+                        <%# ADDED class="add-want-form" %>
+                        <form class="add-want-form" action="/wantlist/add/<%= card.id %>" method="POST" style="display: inline;">
                             <button type="submit" class="want-button">Add to Want List</button>
                         </form>
                     <% } %>
