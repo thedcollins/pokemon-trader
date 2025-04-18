@@ -19,9 +19,9 @@
                     <p>Rarity: <%= item.rarity %></p>
                 </div>
                 <div> <%# --- REMOVE FROM WANT LIST BUTTON --- %>
-                    <%# ADDED class="remove-want-form" %>
                     <form class="remove-want-form" action="/wantlist/remove/<%= item.want_list_item_id %>" method="POST" style="display: inline;">
                         <button type="submit" class="remove-button">Remove from Want List</button>
+                        <span class="action-feedback" style="margin-left: 5px; font-size: 0.8em;"></span> <%# ADDED FEEDBACK SPAN %>
                     </form>
                     <%# --- END REMOVE FROM WANT LIST BUTTON --- %>
                 </div>

@@ -21,9 +21,9 @@
                     <p style="font-size: 0.8em;">(Total Owned: <%= item.total_quantity %>)</p>
                 </div>
                 <div> <%# --- REMOVE FROM TRADE LIST BUTTON --- %>
-                    <%# ADDED class="remove-trade-form" %>
                     <form class="remove-trade-form" action="/tradelist/remove/<%= item.trade_list_item_id %>" method="POST" style="display: inline;">
                         <button type="submit" class="remove-button">Remove from Trade List</button>
+                        <span class="action-feedback" style="margin-left: 5px; font-size: 0.8em;"></span> <%# ADDED FEEDBACK SPAN %>
                     </form>
                     <%# --- END REMOVE FROM TRADE LIST BUTTON --- %>
                 </div>

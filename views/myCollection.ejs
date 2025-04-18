@@ -20,16 +20,16 @@
                     <p class="quantity">Quantity: <%= item.quantity %></p>
                 </div>
                 <div> <%# --- ADD TO TRADE LIST BUTTON --- %>
-                    <%# ADDED class="add-trade-form" %>
                     <form class="add-trade-form" action="/tradelist/add/<%= item.user_collection_id %>" method="POST" style="display: inline;">
                         <button type="submit" class="trade-button">Add to Trade List</button>
+                        <span class="action-feedback" style="margin-left: 5px; font-size: 0.8em;"></span> <%# ADDED FEEDBACK SPAN %>
                     </form>
                     <%# --- END ADD TO TRADE LIST BUTTON --- %>
 
                     <%# --- REMOVE FROM COLLECTION BUTTON --- %>
-                    <%# ADDED class="remove-collection-form" %>
                     <form class="remove-collection-form" action="/collection/remove/<%= item.user_collection_id %>" method="POST" style="display: inline;">
                         <button type="submit" class="remove-button">Remove</button>
+                        <span class="action-feedback" style="margin-left: 5px; font-size: 0.8em;"></span> <%# ADDED FEEDBACK SPAN %>
                     </form>
                     <%# --- END REMOVE FROM COLLECTION BUTTON --- %>
                 </div>

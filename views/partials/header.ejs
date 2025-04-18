@@ -13,7 +13,7 @@
         nav a:hover { text-decoration: underline; }
         nav span { margin-right: 10px; color: #555; }
         hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
-        /* Keep card-specific styles in relevant views or main CSS */
+        /* Card grid styles */
         .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -33,20 +33,51 @@
         .card-item img { max-width: 100%; height: auto; display: block; margin-bottom: 5px; }
         .card-item p { margin: 5px 0 0; font-size: 0.9em; }
         .card-item .quantity { font-weight: bold; margin-top: 5px; }
+        .card-item .quantity { color: blue; } /* Collection quantity */
+        .card-item p.quantity[style*="green"] { color: green; } /* Trade quantity (if needed) */
         .card-item form { margin-top: 5px; display: inline-block; margin-right: 3px; margin-left: 3px; }
         .card-item button { padding: 3px 8px; cursor: pointer; font-size: 0.75em; border-radius: 3px; border: 1px solid #ccc; }
         .card-item button.remove-button { background-color: #ffdddd; border-color: #fcc; color: #900; }
         .card-item button.remove-button:hover { background-color: #ffcccc; }
         .card-item button.trade-button { background-color: #ddffdd; border-color: #cfc; color: #070; }
         .card-item button.trade-button:hover { background-color: #ccffcc; }
-         .card-item button.collection-button { background-color: #ddeeff; border-color: #cce; color: #007; }
-         .card-item button.collection-button:hover { background-color: #cceeff; }
-         .card-item button.want-button { background-color: #eeffee; border-color: #cec; color: #070; }
-          .card-item button.want-button:hover { background-color: #ccffcc; }
+        .card-item button.collection-button { background-color: #ddeeff; border-color: #cce; color: #007; }
+        .card-item button.collection-button:hover { background-color: #cceeff; }
+        .card-item button.want-button { background-color: #eeffee; border-color: #cec; color: #070; }
+        .card-item button.want-button:hover { background-color: #ccffcc; }
+        /* Error message styling */
         .error-message { color: red; margin-bottom: 15px; font-weight: bold; }
+        /* Form group styling */
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; }
         .form-group input[type="text"], .form-group input[type="email"], .form-group input[type="password"] { width: 100%; padding: 8px; margin-bottom: 5px; box-sizing: border-box;}
+
+        /* --- ADDED CSS for Action Feedback --- */
+        .action-feedback {
+            display: inline-block; /* Or block */
+            margin-left: 8px;
+            font-size: 0.85em;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 3px;
+            /* Initially hidden */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .action-feedback.visible {
+            opacity: 1; /* Make visible */
+        }
+        .action-feedback.success {
+            color: #070; /* Dark green */
+            background-color: #eafaea; /* Light green */
+            border: 1px solid #cffccf;
+        }
+        .action-feedback.error {
+            color: #900; /* Dark red */
+            background-color: #fceaea; /* Light red */
+            border: 1px solid #fcc;
+        }
+        /* --- End Action Feedback CSS --- */
 
     </style>
 </head>
@@ -55,7 +86,6 @@
     <nav>
         <a href="/">Home</a> |
         <a href="/cards/browse">Browse Cards</a>
-         <%# Check login status using variables from res.locals (set by middleware) %>
          <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
              | <a href="/collection">My Collection</a>
              | <a href="/tradelist">My Trade List</a>
