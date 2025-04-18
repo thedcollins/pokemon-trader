@@ -1,0 +1,63 @@
+<%- include('partials/header'); %> <%# Include the header partial %>
+
+<%# --- Page Specific Content Starts Here --- %>
+
+<h1><%= typeof profileUsername !== 'undefined' ? profileUsername : 'User' %>'s Profile</h1>
+
+<%# --- Trade List Section --- %>
+<section class="profile-section" style="margin-top: 30px;">
+    <h2>Trade List</h2>
+    <% if (typeof tradeList !== 'undefined' && tradeList.length > 0) { %>
+        <p><%= profileUsername %> has <%= tradeList.length %> item(s) listed for trade.</p>
+        <div class="card-grid">
+            <% tradeList.forEach(item => { %>
+                <div class="card-item">
+                    <div> <% if (item.image_url) { %>
+                            <img src="<%= item.image_url %>" alt="<%= item.card_name %>">
+                        <% } else { %>
+                            <p>(No Image)</p>
+                        <% } %>
+                        <p><strong><%= item.card_name %></strong></p>
+                        <p><%= item.set_name %> - <%= item.card_number %></p>
+                        <p>Rarity: <%= item.rarity %></p>
+                        <p class="quantity" style="color: green;">Qty for Trade: <%= item.quantity_for_trade %></p>
+                        <p style="font-size: 0.8em;">(Total Owned: <%= item.total_quantity %>)</p>
+                    </div>
+                    <%# No action buttons needed on public profile %>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <p><%= profileUsername %> has no items currently listed for trade.</p>
+    <% } %>
+</section>
+
+<%# --- Want List Section --- %>
+<section class="profile-section" style="margin-top: 30px;">
+    <h2>Want List</h2>
+    <% if (typeof wantList !== 'undefined' && wantList.length > 0) { %>
+         <p><%= profileUsername %> wants <%= wantList.length %> card(s).</p>
+        <div class="card-grid">
+            <% wantList.forEach(item => { %>
+                <div class="card-item">
+                    <div> <% if (item.image_url) { %>
+                            <img src="<%= item.image_url %>" alt="<%= item.card_name %>">
+                        <% } else { %>
+                            <p>(No Image)</p>
+                        <% } %>
+                        <p><strong><%= item.card_name %></strong></p>
+                        <p><%= item.set_name %> - <%= item.card_number %></p>
+                        <p>Rarity: <%= item.rarity %></p>
+                    </div>
+                     <%# No action buttons needed on public profile %>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <p><%= profileUsername %> has not added any cards to their want list.</p>
+    <% } %>
+</section>
+
+<%# --- Page Specific Content Ends Here --- %>
+
+<%- include('partials/footer'); %> <%# Include the footer partial %>

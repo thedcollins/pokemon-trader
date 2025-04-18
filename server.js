@@ -17,7 +17,8 @@ const cardApiRoutes = require('./routes/cardApiRoutes');
 const cardPageRoutes = require('./routes/cardPageRoutes');
 const collectionRoutes = require('./routes/collectionRoutes');
 const tradeListRoutes = require('./routes/tradeListRoutes');
-const wantListRoutes = require('./routes/wantListRoutes'); // << ADDED: Require Want List routes
+const wantListRoutes = require('./routes/wantListRoutes');
+const profileRoutes = require('./routes/profileRoutes'); // << ADDED: Require Profile routes
 
 // --- Create Express App ---
 const app = express();
@@ -57,7 +58,10 @@ app.use('/collection', collectionRoutes);
 app.use('/tradelist', tradeListRoutes);
 
 // Mount Want List Routes
-app.use('/wantlist', wantListRoutes); // << ADDED: Mount Want List routes under /wantlist
+app.use('/wantlist', wantListRoutes);
+
+// Mount Profile Routes
+app.use('/profile', profileRoutes); // << ADDED: Mount Profile routes under /profile
 
 // --- Error Handling ---
 

@@ -4,8 +4,30 @@
 
 <h1><%= typeof title !== 'undefined' ? title : 'Browse Cards' %></h1>
 
-<% if (typeof cards !== 'undefined' && cards.length > 0) { %>
-    <div class="card-grid">
+<%# --- Search Form --- %>
+<div class="search-form-container" style="margin-bottom: 20px;">
+    <input
+        type="text"
+        name="search"
+        id="card-search-input" <%# ID for JS %>
+        placeholder="Enter card name..."
+        value="<%= typeof searchTerm !== 'undefined' ? searchTerm : '' %>" <%# Pre-fill with current search term %>
+        style="padding: 8px; min-width: 250px;"
+    >
+    <%# Search button removed as search is live via JS %>
+    <% if (typeof searchTerm !== 'undefined' && searchTerm) { %>
+        <a href="/cards/browse" style="margin-left: 10px; font-size: 0.9em;">Clear</a>
+    <% } %>
+</div>
+<%# --- End Search Form --- %>
+
+<%# Container for card grid - ID for JS %>
+<div class="card-grid" id="card-grid-container">
+    <%# Initial rendering if cards are passed directly (e.g., non-JS fallback or initial load) %>
+    <% if (typeof cards !== 'undefined' && cards.length > 0) { %>
+        <% if (typeof searchTerm !== 'undefined' && searchTerm) { %>
+            <p>Showing results for: <strong><%= searchTerm %></strong></p>
+        <% } %>
         <% cards.forEach(card => { %>
             <div class="card-item">
                 <div> <% if (card.image_url) { %>
@@ -18,28 +40,27 @@
                     <p>Rarity: <%= card.rarity %></p>
                 </div>
 
-                <div> <%# --- ADD/WANT BUTTONS (Only show if logged in) --- %>
-                    <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
-                        <%# Add to Collection Button/Form %>
-                        <%# ADDED class="add-collection-form" %>
+                <div> <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
                         <form class="add-collection-form" action="/collection/add/<%= card.id %>" method="POST" style="display: inline;">
                             <button type="submit" class="collection-button">Add to Collection</button>
                         </form>
-
-                        <%# Add to Want List Button/Form %>
-                        <%# ADDED class="add-want-form" %>
                         <form class="add-want-form" action="/wantlist/add/<%= card.id %>" method="POST" style="display: inline;">
                             <button type="submit" class="want-button">Add to Want List</button>
                         </form>
                     <% } %>
-                    <%# --- END ADD/WANT BUTTONS --- %>
                 </div>
             </div>
         <% }); %>
-    </div>
-<% } else { %>
-    <p>No cards found in the database.</p>
-<% } %>
+    <% } else { %>
+         <%# Display different message depending on if it was a search %>
+         <% if (typeof searchTerm !== 'undefined' && searchTerm) { %>
+            <p>No cards found matching your search term: <strong><%= searchTerm %></strong>. <a href="/cards/browse">View all cards</a>.</p>
+         <% } else { %>
+            <p>No cards found in the database.</p>
+         <% } %>
+    <% } %>
+</div> <%# End card-grid-container %>
+
 
 <%# --- Page Specific Content Ends Here --- %>
 
